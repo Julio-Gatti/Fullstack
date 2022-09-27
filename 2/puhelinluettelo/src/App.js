@@ -40,6 +40,7 @@ const App = () => {
               setMessage(null)
             }, 4000)
           })
+
           .catch(error => {
             setError(`Failed to update ${foundPerson.name} number, it may have been deleted already`)
             setTimeout(() => {
@@ -62,12 +63,12 @@ const App = () => {
           setTimeout(() => {
             setMessage(null)
         }, 4000)
-        .catch(error => {
-          setError("Failed to add person")
-          setTimeout(() => {
-            setError(null)
-          }, 4000)
-        })
+      })
+      .catch(error => {
+        setError("Failed to add person")
+        setTimeout(() => {
+          setError(null)
+        }, 4000)
       })
   }
 
