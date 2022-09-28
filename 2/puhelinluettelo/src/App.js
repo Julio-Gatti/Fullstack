@@ -42,7 +42,7 @@ const App = () => {
           })
 
           .catch(error => {
-            setError(`Failed to update ${foundPerson.name} number, it may have been deleted already`)
+            setError(`Failed to update ${foundPerson.name} number`)
             setTimeout(() => {
               setError(null)
             }, 4000)
