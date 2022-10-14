@@ -42,10 +42,10 @@ const App = () => {
           })
 
           .catch(error => {
-            setError(`Failed to update ${foundPerson.name} number`)
+            setError(`${error.response.data.error}`)
             setTimeout(() => {
               setError(null)
-            }, 4000)
+            }, 8000)
           })
       }
       return
@@ -65,10 +65,11 @@ const App = () => {
         }, 4000)
       })
       .catch(error => {
-        setError("Failed to add person")
+        console.log(error.response.data)
+        setError(`${error.response.data.error}`)
         setTimeout(() => {
           setError(null)
-        }, 4000)
+        }, 8000)
       })
   }
 
