@@ -30,7 +30,7 @@ const errorHandler = (error, request, response, next) => {
   next(error)
 }
 
-const tokenExtractor = async (request, response, next) => {
+const tokenExtractor = (request, response, next) => {
   const authorization = request.get('authorization')
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     request.token = authorization.substring(7)
@@ -39,6 +39,8 @@ const tokenExtractor = async (request, response, next) => {
   }
 
   next()
+
+  return request.token
 }
 
 module.exports = {

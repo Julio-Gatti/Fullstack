@@ -28,19 +28,13 @@ const getTokenFrom = request => {
 blogsRouter.post('/', async (request, response, next) => {
   const body = request.body
 
-  const token = getTokenFrom(request)
-  const decodedToken = jwt.verify(token, process.env.SECRET)
-
-
-  //const decodedToken = jwt.verify(request.token, process.env.SECRET)
-  //if (!request.token || !decodedToken.id) {
-  
-  if (!token || !decodedToken.id) {
-    return response.status(401).json({ error: 'Token missing or invalid' })
-  }
-
   if (!body.title && !body.url) {
     response.status(400).json('Title and URL missing')
+  }
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'Token missing or invalid' })
   }
 
   const user = await User.findById(decodedToken.id)
