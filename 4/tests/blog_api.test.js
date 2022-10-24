@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 const supertest = require('supertest')
 const app = require('../app')
+const blog = require('../models/blog')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
@@ -104,7 +105,7 @@ describe('Adding blogs', () => {
 })
 
 describe('Deleting blogs', () => {
-  test('Succeeds with status code 204', async () => {
+  test('Deletion succeeds with status code 204', async () => {
     const blogs = await helper.blogsInDb()
     const toDelete = blogs[0]
 
@@ -113,14 +114,42 @@ describe('Deleting blogs', () => {
       .expect(204)
 
     const newBlogs = await helper.blogsInDb()
-
     expect(newBlogs).toHaveLength(
       helper.initialBlogs.length - 1
     )
 
     const titles = newBlogs.map(r => r.title)
-
     expect(titles).not.toContain(toDelete.title)
+  })
+})
+
+describe('Updating blogs', () => {
+  test('Setting likes to zero succeeds with status code 200', async () => {
+    const blogs = await helper.blogsInDb()
+    const toUpdate = blogs[0]
+
+    await api
+      .put(`/api/blogs/${toUpdate.id}`)
+      .send({ ...blog, likes: 0 })
+      .expect(200)
+
+    const newBlogs = await helper.blogsInDb()
+    const updated = newBlogs.find(b => b.id === toUpdate.id)
+    expect(updated.likes).toEqual(0)
+  })
+
+  test('Adding a like succeeds with status code 200', async () => {
+    const blogs = await helper.blogsInDb()
+    const toUpdate = blogs[0]
+
+    await api
+      .put(`/api/blogs/${toUpdate.id}`)
+      .send({ ...blog, likes: toUpdate.likes + 1 })
+      .expect(200)
+
+    const newBlogs = await helper.blogsInDb()
+    const updated = newBlogs.find(b => b.id === toUpdate.id)
+    expect(updated.likes).toEqual(toUpdate.likes + 1)
   })
 })
 
