@@ -1,5 +1,6 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Imp1dXNvIiwiaWQiOiI2MzU2ZDJiOWVlYTllZjM5NjRmNzkyYzgiLCJpYXQiOjE2NjY2MzQ4MzgsImV4cCI6MTY2NjYzODQzOH0.ty-sHahBV2iChJrs_4W-RnmI4D3Mjas83GWwiap85zQ
 
 {
   "title": "Testi2",
