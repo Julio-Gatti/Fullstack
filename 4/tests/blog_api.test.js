@@ -10,20 +10,15 @@ const helper = require('./test_helper')
 
 beforeEach(async () => {
   await Blog.deleteMany({})
-
-  let blogObject = new Blog(helper.initialBlogs[0])
-  await blogObject.save()
-
-  blogObject = new Blog(helper.initialBlogs[1])
-  await blogObject.save()
+  await Blog.insertMany(helper.initialBlogs)
 })
 
 describe('Getting blogs', () => {
   test('Blogs are returned as JSON', async () => {
-    await api
-      .get('/api/blogs')
-      .expect(200)
-      .expect('Content-Type', /application\/json/)
+    const response = await api.get('/api/blogs')
+    
+    .expect(200)
+    .expect('Content-Type', /application\/json/)
   })
 
   test('All blogs are returned', async () => {
