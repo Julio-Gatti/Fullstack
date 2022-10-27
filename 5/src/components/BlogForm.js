@@ -1,18 +1,41 @@
+import { useState } from 'react'
 import Notification from './Notification'
 
-const BlogForm = ({
-  handleSubmit,
-  handleTitleChange,
-  handleAuthorChange,
-  handleURLChange,
-  title,
-  author,
-  url
-}) => {
+const BlogForm = ({ createBlog }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setURL] = useState('')
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value)
+  }
+
+  const handleAuthorChange = (event) => {
+    setAuthor(event.target.value)
+  }
+
+  const handleURLChange = (event) => {
+    setURL(event.target.value)
+  }
+
+  const addBlog = (event) => {
+    event.preventDefault()
+
+    createBlog({
+      title: title,
+      author: author,
+      url: url
+    })
+
+    setTitle('')
+    setAuthor('')
+    setURL('')
+  }
+
   return (
     <div>
       <h2>Create new</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={addBlog}>
         <div>
           Title
           <input

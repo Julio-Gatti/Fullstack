@@ -13,9 +13,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setURL] = useState('')
   const [notificationText, setNotificationText] = useState(null)
   const [notificationColor, setNotificationColor] = useState('green')
   const blogFormRef = useRef()
@@ -75,16 +72,8 @@ const App = () => {
     window.localStorage.clear()
   }
 
-  const handleNew = (event) => {
-    event.preventDefault()
-
+  const createBlog = (blog) => {
     console.log('Creating a blog')
-
-    const blog = {
-      title: title,
-      author: author,
-      url: url
-    }
 
     try {
       blogFormRef.current.toggleVisibility()
@@ -92,9 +81,6 @@ const App = () => {
         .create(blog)
         .then(returnedBlog => {
           setBlogs(blogs.concat(returnedBlog))
-          setTitle('')
-          setAuthor('')
-          setURL('')
         })
 
         setNotificationText(`Created blog ${blog.title}`)
@@ -137,13 +123,7 @@ const App = () => {
 
       <Togglable buttonLabel='New blog' ref={blogFormRef}>
         <BlogForm
-          handleSubmit={handleNew}
-          handleTitleChange={({ target }) => setTitle(target.value)}
-          handleAuthorChange={({ target }) => setAuthor(target.value)}
-          handleURLChange={({ target }) => setURL(target.value)}
-          title={title}
-          author={author}
-          url={url}
+          createBlog={createBlog}
         />
       </Togglable>
 
