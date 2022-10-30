@@ -21,8 +21,8 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs =>
-      setBlogs( blogs )
-    )
+        setBlogs(blogs)
+      )
   }, [])
 
   useEffect(() => {
@@ -83,15 +83,35 @@ const App = () => {
           setBlogs(blogs.concat(returnedBlog))
         })
 
-        setNotificationText(`Created blog ${blog.title}`)
-        setNotificationColor('green')
-        setTimeout(() => {
-          setNotificationText(null)
-        }, 5000)
+      setNotificationText(`Created blog ${blog.title}`)
+      setNotificationColor('green')
+      setTimeout(() => {
+        setNotificationText(null)
+      }, 5000)
     } catch (exception) {
       console.log('Failed to create blog')
 
       setNotificationText('Failed to create blog')
+      setNotificationColor('red')
+      setTimeout(() => {
+        setNotificationText(null)
+      }, 5000)
+    }
+  }
+
+  const like = async (blog) => {
+    try {
+      console.log('Liking', blog)
+      
+      blog.likes++
+      await blogService.update(blog)
+      blogService.getAll().then(blogs => setBlogs(blogs))
+
+      console.log('Liked blog')
+    } catch (exception) {
+      console.log('Failed to like blog')
+
+      setNotificationText('Failed to like blog')
       setNotificationColor('red')
       setTimeout(() => {
         setNotificationText(null)
@@ -128,7 +148,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} like={like} />
       )}
     </div>
   )

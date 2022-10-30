@@ -7,12 +7,16 @@ const User = require('../models/user')
 router.get('/', async (request, response) => {
   const blogs = await Blog
     .find({})
-    .populate('user', { username: 1, name: 1 })
+    .find({}).populate('user', { username: 1, name: 1 })
 
   response.json(blogs)
 })
 
 router.post('/', async (request, response, next) => {
+  if (!request.user) {
+    return response.status(401).json({ error: 'Token missing or invalid' })
+  }
+
   const body = request.body
 
   if (!body.title && !body.url) {
@@ -21,13 +25,7 @@ router.post('/', async (request, response, next) => {
 
   const user = request.user
 
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
-    user: user._id
-  })
+  const blog = new Blog({ ...request.body, user: user.id })
 
   try {
     const savedBlog = await blog.save()
@@ -35,7 +33,7 @@ router.post('/', async (request, response, next) => {
     await user.save()
 
     response.status(201).json(savedBlog)
-  } catch(expection) {
+  } catch (expection) {
     next(expection)
   }
 })
@@ -53,16 +51,18 @@ router.delete('/:id', async (request, response, next) => {
 })
 
 router.put('/:id', async (request, response, next) => {
-  const body = request.body
-
-  const blog = {
-    likes: body.likes
-  }
+  const blog = request.body
 
   try {
-    const newBlog = await Blog.findByIdAndUpdate(request.params.id, blog, { new: true })
-    response.status(200).json(blog)
-  } catch(expection) {
+    const newBlog = await Blog
+      .findByIdAndUpdate(
+        request.params.id,
+        blog,
+        { new: true, runValidators: false, context: 'query' }
+      )
+
+    response.status(200).json(newBlog)
+  } catch (expection) {
     next(expection)
   }
 })
