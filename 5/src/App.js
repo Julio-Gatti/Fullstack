@@ -21,7 +21,7 @@ const App = () => {
     blogService
       .getAll()
       .then(blogs =>
-        setBlogs(blogs)
+        setBlogs(blogs.sort((a, b) => b.likes - a.likes))
       )
   }, [])
 
@@ -105,7 +105,8 @@ const App = () => {
       
       blog.likes++
       await blogService.update(blog)
-      blogService.getAll().then(blogs => setBlogs(blogs))
+      blogService.getAll()
+        .then(blogs => setBlogs(blogs.sort((a, b) => b.likes - a.likes)))
 
       console.log('Liked blog')
     } catch (exception) {
