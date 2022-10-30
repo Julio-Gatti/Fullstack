@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import Notification from './Notification'
 
 const BlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
