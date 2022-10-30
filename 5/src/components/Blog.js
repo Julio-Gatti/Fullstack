@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, like }) => {
+const Blog = ({ blog, like, remove, user }) => {
   const [full, setFull] = useState(false)
 
   const blogStyle = {
@@ -30,6 +30,11 @@ const Blog = ({ blog, like }) => {
           <p>
             {blog.author}
           </p>
+          {blog.user.id === user.id &&
+            <button onClick={() => remove(blog)}>
+              Remove
+            </button>
+          }
         </div>
       }
     </div>

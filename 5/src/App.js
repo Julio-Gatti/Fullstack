@@ -52,6 +52,8 @@ const App = () => {
       setUser(user)
       setUsername('')
       setPassword('')
+
+      console.log('Logged in', user)
     } catch (exception) {
       console.log('Wrong credentials')
 
@@ -100,9 +102,9 @@ const App = () => {
   }
 
   const like = async (blog) => {
+    console.log('Liking', blog)
+
     try {
-      console.log('Liking', blog)
-      
       blog.likes++
       await blogService.update(blog)
       blogService.getAll()
@@ -117,6 +119,34 @@ const App = () => {
       setTimeout(() => {
         setNotificationText(null)
       }, 5000)
+    }
+  }
+
+  const remove = async (blog) => {
+    console.log('Removing', blog)
+
+    const confirmed = window.confirm('Really remove blog?', blog.title)
+    if (confirmed) {
+      try {
+        await blogService.remove(blog)
+        blogService.getAll().then(blogs => setBlogs(blogs))
+
+        console.log('Removed blog')
+
+        setNotificationText('Removed blog')
+        setNotificationColor('green')
+        setTimeout(() => {
+          setNotificationText(null)
+        }, 5000)
+      } catch (exception) {
+        console.log('Failed to remove blog')
+
+        setNotificationText('Failed to remove blog')
+        setNotificationColor('red')
+        setTimeout(() => {
+          setNotificationText(null)
+        }, 5000)
+      }
     }
   }
 
@@ -137,7 +167,7 @@ const App = () => {
 
       <Notification message={notificationText} color={notificationColor} />
 
-      <p>{user.name} logged in</p>
+      <p>{user.name} {user.id} logged in</p>
       <button onClick={() => handleLogOut()}>
         Log out
       </button>
@@ -149,7 +179,7 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog =>
-        <Blog key={blog.id} blog={blog} like={like} />
+        <Blog key={blog.id} blog={blog} like={like} remove={remove} user={user}/>
       )}
     </div>
   )
