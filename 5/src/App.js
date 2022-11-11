@@ -65,7 +65,7 @@ const App = () => {
     }
   }
 
-  const handleLogOut = (event) => {
+  const handleLogOut = () => {
     //event.preventDefault()
 
     console.log('Logging out')
