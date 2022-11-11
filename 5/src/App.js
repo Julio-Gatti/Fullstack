@@ -167,7 +167,7 @@ const App = () => {
 
       <Notification message={notificationText} color={notificationColor} />
 
-      <p>{user.name} {user.id} logged in</p>
+      <p>{user.name} logged in</p>
       <button onClick={() => handleLogOut()}>
         Log out
       </button>
