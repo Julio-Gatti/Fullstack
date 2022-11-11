@@ -22,6 +22,7 @@ test('The author, URL and likes are displayed when the view button is pressed', 
   render(<Blog blog={blog} />)
 
   const user = userEvent.setup()
+
   const viewButton = screen.getByText('View')
   await user.click(viewButton)
 
@@ -33,4 +34,21 @@ test('The author, URL and likes are displayed when the view button is pressed', 
 
   const likes = screen.getByText('likes', { exact: false })
   expect(likes).toBeDefined()
+})
+
+test('Pressing the like button twice causes the mock handler to be called the same number of times', async () => {
+  const mockHandler = jest.fn()
+
+  render(<Blog blog={blog} like={mockHandler} />)
+
+  const user = userEvent.setup()
+
+  const viewButton = screen.getByText('View')
+  await user.click(viewButton)
+
+  const likeButton = screen.getByText('Like')
+  await user.click(likeButton)
+  await user.click(likeButton)
+
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
