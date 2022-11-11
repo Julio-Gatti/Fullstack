@@ -7,9 +7,7 @@ describe('Blog app', function() {
 
   beforeEach(function() {
     cy.request('POST', 'http://localhost:3003/api/testing/reset')
-
     cy.request('POST', 'http://localhost:3003/api/users/', user)
-
     cy.visit('http://localhost:3000')
   })
 
@@ -39,10 +37,7 @@ describe('Blog app', function() {
 
   describe('When logged in', function() {
     beforeEach(function() {
-      cy.contains('Login').click()
-      cy.get('#username').type(user.username)
-      cy.get('#password').type(user.password)
-      cy.get('#login').click()
+      cy.login(user)
     })
 
     it('A blog can be created', function() {
@@ -72,6 +67,23 @@ describe('Blog app', function() {
         .parent().get('#like').click()
 
       cy.contains('Likes 1')
+    })
+
+    it('A blog can be deleted', function() {
+      cy.get('#newBlog').click()
+
+      cy.get('#title').type('Test title')
+      cy.get('#author').type(user.name)
+      cy.get('#url').type('test.com')
+      cy.get('#create').click()
+
+      cy.get('#blogs').should('contain', 'Test title')
+
+      cy.contains('Test title')
+        .parent().contains('View').click()
+        .parent().contains('Remove').click()
+
+      cy.get('html').should('not.contain', 'Test title')
     })
   })
 })
