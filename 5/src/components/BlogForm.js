@@ -38,6 +38,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           Title
           <input
+            id='title'
             type="text"
             value={title}
             name="Username"
@@ -48,6 +49,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           Author
           <input
+            id='author'
             type="text"
             value={author}
             name="Password"
@@ -58,6 +60,7 @@ const BlogForm = ({ createBlog }) => {
         <div>
           URL
           <input
+            id='url'
             type="text"
             value={url}
             name="Password"
@@ -65,7 +68,7 @@ const BlogForm = ({ createBlog }) => {
             placeholder='URL'
           />
         </div>
-        <button type="submit">Create</button>
+        <button id='create' type="submit">Create</button>
       </form>
     </div>
   )
