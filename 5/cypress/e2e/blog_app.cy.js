@@ -85,5 +85,38 @@ describe('Blog app', function() {
 
       cy.get('html').should('not.contain', 'Test title')
     })
+
+    it('Blogs are ordered by likes, most likes first', function() {
+      cy.get('#newBlog').click()
+
+      cy.get('#title').type('Test title')
+      cy.get('#author').type(user.name)
+      cy.get('#url').type('test.com')
+      cy.get('#create').click()
+
+      cy.get('#blogs').should('contain', 'Test title')
+
+      cy.contains('Test title')
+        .parent().contains('View').click()
+        .parent().get('#like').click()
+        .parent().parent().contains('Hide').click()
+
+      
+
+      cy.get('#newBlog').click()
+
+      cy.get('#title').type('Test title2')
+      cy.get('#author').type(user.name)
+      cy.get('#url').type('test.com')
+      cy.get('#create').click()
+
+      cy.contains('Test title2')
+        .parent().contains('View').click()
+        .parent().get('#like').click()
+        .parent().get('#like').click()
+
+      cy.get('.blog').eq(0).should('contain', 'Test title')
+      cy.get('.blog').eq(1).should('contain', 'Test title2')
+    })
   })
 })
