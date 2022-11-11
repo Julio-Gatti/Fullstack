@@ -11,8 +11,6 @@ const LoginForm = ({
     <div>
       <h2>Login</h2>
 
-      {/*<Notification message={notificationText} color={notificationColor} />*/}
-
       <form onSubmit={handleLogin}>
         <div>
           Username

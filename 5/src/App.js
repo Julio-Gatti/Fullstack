@@ -152,12 +152,16 @@ const App = () => {
 
   if (!user) {
     return (
-      <LoginForm
-        handleLogin={handleLogin}
-        handleUsernameChange={({ target }) => setUsername(target.value)}
-        handlePasswordChange={({ target }) => setPassword(target.value)}
-        handleSubmit={handleLogin}
-      />
+      <div>
+        <Notification message={notificationText} color={notificationColor} />
+
+        <LoginForm
+          handleLogin={handleLogin}
+          handleUsernameChange={({ target }) => setUsername(target.value)}
+          handlePasswordChange={({ target }) => setPassword(target.value)}
+          handleSubmit={handleLogin}
+        />
+      </div>
     )
   }
 

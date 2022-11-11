@@ -28,7 +28,12 @@ describe('Blog app', function() {
     })
 
     it('Fails with the wrong credentials', function() {
-      
+      cy.contains('Login').click()
+      cy.get('#Username').type(user.username)
+      cy.get('#Password').type('j')
+      cy.get('#Login').click()
+
+      cy.contains('Wrong credentials')
     })
   })
 })
